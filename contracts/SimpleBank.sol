@@ -26,10 +26,10 @@ contract SimpleBank {
     //
 
     /* Add an argument for this event, an accountAddress */
-    event LogEnrolled();
+    event LogEnrolled(address accountAddress);
 
     /* Add 2 arguments for this event, an accountAddress and an amount */
-    event LogDepositMade();
+    event LogDepositMade(address accountAddress,uint amount );
 
     /* Create an event called LogWithdrawal */
     /* Add 3 arguments for this event, an accountAddress, withdrawAmount and a newBalance */
@@ -70,7 +70,9 @@ contract SimpleBank {
     function enroll() public returns (bool){
 
         enrolled[msg.sender]=true;
+        emit LogEnrolled(msg.sender);
         return true;
+
     }
 
     /// @notice Deposit ether into bank
@@ -86,7 +88,7 @@ contract SimpleBank {
         accountBalance +=msg.value;
         balances[msg.sender] = accountBalance;
 
-        emit LogWithdrawal(msg.sender,msg.value);
+        emit LogDepositMade(msg.sender,msg.value);
 
         return accountBalance;
 
