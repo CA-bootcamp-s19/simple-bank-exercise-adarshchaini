@@ -107,15 +107,11 @@ contract SimpleBank {
 
         uint accountBalance = balances[msg.sender];
 
-        if(withdrawAmount<=accountBalance){
+        require(withdrawAmount<=accountBalance,'Insufficient Fund');
 
-            accountBalance -=withdrawAmount;
-            balances[msg.sender] = accountBalance;
-            emit LogWithdrawal(msg.sender,withdrawAmount);
-        }else{
-
-            revert("Insufficient Fund");
-        }
+        accountBalance -=withdrawAmount;
+        balances[msg.sender] = accountBalance;
+        msg.sender.transfer(withdrawAmount);
 
         return accountBalance;
 
